@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\Categories;
+use App\Http\Livewire\Sbmembers;
 use App\Http\Livewire\Classifications;
 use App\Http\Livewire\Employees;
 use App\Http\Livewire\Incomingdocuments;
@@ -39,6 +40,7 @@ Route::middleware([
     Route::get('ordinances',Ordinances::class)->name('ordinances');
     Route::get('resolutions',Resolutions::class)->name('resolutions');
     Route::get('orderbusiness',Orderbusinesses::class)->name('orderbusiness');
+    Route::get('sbmembers',Sbmembers::class)->name('sbmembers');
     
     Route::get('orderbusiness/view/{id}', 'App\Http\Controllers\ViewOrderBusinessController@view')->name('orderbusiness.view');
 });

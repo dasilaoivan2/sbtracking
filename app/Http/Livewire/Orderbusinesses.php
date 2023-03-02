@@ -11,6 +11,7 @@ use App\Models\Orderbusiness;
 use App\Models\Ordercategory;
 use App\Models\Orderincdoc;
 use App\Models\Orderunfinbus;
+use App\Models\Othermatter;
 use App\Models\Sbmember;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -26,12 +27,14 @@ class Orderbusinesses extends Component
 
     public $ordercategories, $sbmembers;
 
-    public $description, $number_order_sb, $number_order_session, $session_date, $invocation, $ordercategory_id, $other_matter, $reading;
+    public $description, $number_order_sb, $number_order_session, $session_date, $invocation, $ordercategory_id, $reading;
     public $orderbusiness_id;
     public $orderbusinessfiles;
 
 
     public $references, $referencelists = [], $title, $proponent, $referencefile;
+
+    public $othermatters, $othermatterlists = [], $othermatter_desc;
 
     public $incdocArray = [], $incomingdocument_id = [];
     public $incdocUnfinArray = [], $unfinincomingdocument_id = [];
@@ -48,12 +51,14 @@ class Orderbusinesses extends Component
     public $openEditModal = false;
     public $referenceModal = false;
     public $referenceEditModal = false;
+    public $othermatterModal = false;
+    public $othermatterEditModal = false;
 
     public function mount()
     {
         $this->ordercategories = Ordercategory::all();
         
-        $this->sbmembers = Sbmember::all();
+        $this->sbmembers = Sbmember::where('status', 1)->get();
     }
 
 
@@ -72,6 +77,26 @@ class Orderbusinesses extends Component
         $this->openAddModal();
         $this->resetInputFields();
 
+    }
+
+    public function showEditModalMatter()
+    {
+        $this->othermatterEditModal = true;
+    }
+
+    public function closeEditModalMatter()
+    {
+        $this->othermatterEditModal = false;
+    }
+
+    public function showAddModalMatter()
+    {
+        $this->othermatterModal = true;
+    }
+
+    public function closeAddModalMatter()
+    {
+        $this->othermatterModal = false;
     }
     
     public function showEditModalRef()
@@ -111,14 +136,14 @@ class Orderbusinesses extends Component
         $this->number_order_session = "";
         $this->session_date = ""; 
         $this->invocation = ""; 
-        $this->ordercategory_id = ""; 
-        $this->other_matter = '';
+        $this->ordercategory_id = "";
         $this->reading = '';
         
         $this->photos = [];
         $this->orderbusiness_id = null;
 
         $this->referencelists = [];
+        $this->othermatterlists = [];
         $this->resetArrayCheckbox();
     }
 
@@ -213,7 +238,6 @@ class Orderbusinesses extends Component
             'session_date' => $this->session_date,
             'ordercategory_id' => $this->ordercategory_id,
             'invocation' => $this->invocation,
-            'other_matter' => $this->other_matter,
             'reading' => $this->reading,
         ]);
 
@@ -287,6 +311,17 @@ class Orderbusinesses extends Component
             }
         }
 
+        if(count($this->othermatterlists) > 0)
+        {
+            foreach($this->othermatterlists as $othermatterlist)
+            {
+                Othermatter::create([
+                    'orderbusiness_id' => $orderbusiness->id,
+                    'description' => $othermatterlist['othermatter_desc']
+                ]);
+            }
+        }
+
         session()->flash('message', 'Order of Business Created Successfully.');
         $this->closeAddModal();
         $this->resetInputFields();
@@ -309,7 +344,6 @@ class Orderbusinesses extends Component
         $this->session_date = $orderbusiness->session_date;
         $this->ordercategory_id = $orderbusiness->ordercategory_id;
         $this->invocation = $orderbusiness->invocation;
-        $this->other_matter = $orderbusiness->other_matter;
         $this->reading = $orderbusiness->reading;
 
         $this->references = $orderbusiness->businessreferences;
@@ -334,6 +368,7 @@ class Orderbusinesses extends Component
          }
 
          $this->orderbusinessfiles = $orderbusiness->orderbusfiles;
+         $this->othermatters = $orderbusiness->othermatters;
 
 
 
@@ -366,6 +401,20 @@ class Orderbusinesses extends Component
         $this->references = $orderbusiness->businessreferences;
         $this->clearReferenceField();
         $this->closeEditModalRef();
+    }
+
+    public function addOthermatterInEdit()
+    {
+        $orderbusiness = Orderbusiness::find($this->orderbusiness_id);
+
+            Othermatter::create([
+                'orderbusiness_id' => $this->orderbusiness_id,
+                'description' => $this->othermatter_desc
+                ]);
+
+        $this->othermatters = $orderbusiness->othermatters;
+        $this->clearOthermatterField();
+        $this->closeEditModalMatter();
     }
 
     public function addPhoto()
@@ -406,7 +455,6 @@ class Orderbusinesses extends Component
                 'invocation' => 'required',
                 'incomingdocument_id' => 'required',
                 'reading' => 'required',
-                'activity_id' => 'required',
                 'photos.*' => 'mimes:jpg,jpeg,png,pdf|max:4096', // 4MB Max
     
             ]);
@@ -421,7 +469,6 @@ class Orderbusinesses extends Component
                 'ordercategory_id' => $this->ordercategory_id,
                 'invocation' => $this->invocation,
                 'reading' => $this->reading,
-                'other_matter' => $this->other_matter,
             ]);
 
             foreach ($this->photos as $photo) {
@@ -488,6 +535,11 @@ class Orderbusinesses extends Component
         $this->referencefile = '';
     }
 
+    public function clearOthermatterField()
+    {
+        $this->othermatter_desc = '';
+    }
+
     public function addReference()
     {
         $this->validate([
@@ -510,6 +562,32 @@ class Orderbusinesses extends Component
         $this->closeAddModalRef();
     }
 
+    public function addOthermatter()
+    {
+        $this->validate([
+            'othermatter_desc' => 'required'
+        ],
+        [
+            'othermatter_desc.required' => 'Required Field'
+        ]);
+
+        $this->othermatterlists[] = [
+            'othermatter_desc' => $this->othermatter_desc
+        ];
+
+        $this->clearOthermatterField();
+        $this->closeAddModalMatter();
+    }
+
+    public function deleteMatter($index)
+    {
+        unset($this->othermatterlists[$index]);
+        $this->othermatterlists = array_values($this->othermatterlists);
+
+
+        $this->clearReferenceField();
+    }
+
     public function deleteReference($index)
     {
         unset($this->referencelists[$index]);
@@ -529,6 +607,16 @@ class Orderbusinesses extends Component
 
         $orderbusiness = Orderbusiness::find($this->orderbusiness_id);
         $this->references = $orderbusiness->businessreferences;
+    }
+    
+    public function deleteMatterEdit($id)
+    {
+        $othermatter = Othermatter::find($id);
+
+        $othermatter->delete();
+
+        $orderbusiness = Orderbusiness::find($this->orderbusiness_id);
+        $this->othermatters = $orderbusiness->othermatters;
     }
 
 

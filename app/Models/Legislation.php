@@ -9,7 +9,7 @@ class Legislation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','description','legislationtype_id','referral_id', 'dateenacted', 'referencenumber'];
+    protected $fillable = ['title','description','legislationtype_id','referral_id', 'dateenacted', 'referencenumber', 'sbmember_id'];
 
     public function legislationtype(){
         return $this->belongsTo('App\Models\Legislationtype');
@@ -29,5 +29,9 @@ class Legislation extends Model
 
     public function legislationfiles(){
         return $this->hasMany('App\Models\Legislationfile');
+    }
+
+    public function sbmember(){
+        return $this->belongsTo('App\Models\Sbmember');
     }
 }

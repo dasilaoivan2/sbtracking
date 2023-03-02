@@ -5,8 +5,9 @@
 
     <x-slot name="content">
 
+    <div class="mb-4">
         <x-jet-input class="w-full" type="text" wire:model="name" placeholder="Type name here..."></x-jet-input>
-
+    </div>
         @error('name')
 
         <span class="text-xs font-bold text-red-600 font-italic">Please type name...</span>

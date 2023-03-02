@@ -80,6 +80,10 @@
                                         {{ __('Employees') }}
                                     </x-jet-nav-link>
 
+                                    <x-jet-dropdown-link  href="{{ route('sbmembers') }}">
+                                        {{ __('SB Members') }}
+                                    </x-jet-nav-link>
+
                                 
 
                                 </x-slot>

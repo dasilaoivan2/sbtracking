@@ -517,15 +517,25 @@
 
         </table>
         <br>
-        <table style="margin-left: 80px;">
+        @php
+        $count = 1;
+        @endphp
+        <table style="margin-left: 50px;">
+            
+
+            @foreach($orderbusiness->othermatters as $othermatters)
             <tr>
-                <td class="font-normal">{{ $orderbusiness->other_matter}}</td>
+                <td class="font-normal bold">{{$count++}}. {{ $othermatters->description}}</td>
             </tr>
+
+            
+
+
+
+            @endforeach
 
 
         </table>
-
-
         <br>
 
         <table>

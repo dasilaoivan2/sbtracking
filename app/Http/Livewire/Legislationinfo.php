@@ -15,7 +15,7 @@ class Legislationinfo extends Component
 
     public function mount()
     {
-        $this->sbmembers = Sbmember::all();
+        $this->sbmembers = Sbmember::where('status', 1)->get();
         $this->legislation = Legislation::find($this->legislation_id);
     }
 

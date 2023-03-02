@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             ClassificationSeeder::class,
             OrdercategorySeeder::class,
             TypeSeeder::class,
+            AuthorSeeder::class,
         ]);
     }
 }

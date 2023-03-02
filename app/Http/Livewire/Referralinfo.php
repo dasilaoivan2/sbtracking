@@ -9,6 +9,7 @@ use App\Models\Legislation;
 use App\Models\Legislationfile;
 use App\Models\Legislationtype;
 use App\Models\Referral;
+use App\Models\Sbmember;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -22,11 +23,14 @@ class Referralinfo extends Component
 
     public $legislationfilenames = [], $legislationfiles;
 
+    public $sbmembers, $sbmember_id;
+
     public function mount()
     {
         $this->activitytypes=Activitytype::all();
         $this->legislationtypes=Legislationtype::all();
         $this->referral = Referral::find($this->referral_id);
+        $this->sbmembers = Sbmember::where('status', 1)->get();
     }
 
     public function render()
@@ -102,7 +106,7 @@ class Referralinfo extends Component
 
     public function resetLegislationFields()
     {
-        $this->reset(['referencenumber','legislation_title', 'legislation_description', 'legislationtype_id', 'dateenacted','legislation_id']);
+        $this->reset(['referencenumber','legislation_title', 'legislation_description', 'legislationtype_id', 'dateenacted','legislation_id', 'sbmember_id']);
         $this->legislationfilenames = [];
     }
 
@@ -124,6 +128,7 @@ class Referralinfo extends Component
             'referencenumber'=>'required',
             'legislationtype_id'=>'required',
             'dateenacted'=>'required',
+            'sbmember_id'=>'required',
         ]);
 
         $legislation = Legislation::create([
@@ -133,6 +138,7 @@ class Referralinfo extends Component
             'legislationtype_id'=>$this->legislationtype_id,
             'referral_id'=>$this->referral_id,
             'dateenacted'=>$this->dateenacted,
+            'sbmember_id'=>$this->sbmember_id,
         ]);
 
         foreach($this->legislationfilenames as $legislationfilename)
@@ -161,6 +167,7 @@ class Referralinfo extends Component
         $this->referencenumber = $legislation->referencenumber; 
         $this->legislationtype_id = $legislation->legislationtype_id; 
         $this->dateenacted = $legislation->dateenacted; 
+        $this->sbmember_id = $legislation->sbmember_id; 
 
         $this->legislationfiles = $legislation->legislationfiles;
 
@@ -176,6 +183,7 @@ class Referralinfo extends Component
             'referencenumber'=>'required',
             'legislationtype_id'=>'required',
             'dateenacted'=>'required',
+            'sbmember_id'=>'required',
         ]);
 
         $legislation = Legislation::find($this->legislation_id);
@@ -186,6 +194,7 @@ class Referralinfo extends Component
             'legislationtype_id'=>$this->legislationtype_id,
             'referral_id'=>$this->referral_id,
             'dateenacted'=>$this->dateenacted,
+            'sbmember_id'=>$this->sbmember_id,
         ]);
 
         foreach($this->legislationfilenames as $legislationfilename)

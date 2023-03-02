@@ -1,23 +1,25 @@
-<table class="border p-1 w-1/2">
+<table class="table-auto w-full text-center">
     <thead>
-        <tr>
-            <th class="border p-1">#</th>
-            <th class="border p-1">Name</th>
-            <th class="border p-1">Category</th>
-            <th class="border p-1">Action</th>
+        <tr class="bg-gray-100">
+            <th class="px-4 py-2 w-20">#</th>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Category</th>
+            <th width="230px" class="px-4 py-2">Action</th>
         </tr>
     </thead>
-    @php
-        $count=1;
-    @endphp
     <tbody>
-        @foreach ($classifications as $classification)
+        <?php $temp = 0; ?>
+
+        @foreach($classifications as $classification)
         <tr>
-            <td class="border p-1">{{ $count++ }}</td>
-            <td class="border p-1">{{ $classification->name }}</td>
-            <td class="border p-1">{{ $classification->category->name }}</td>
-            <td class="border p-1">
-                <x-jet-button wire:click="edit({{ $classification->id }})">Edit</x-jet-button>
+            <?php $temp++; ?>
+            <td class="border px-4 py-2">{{$temp}}</td>
+            <td class="border px-4 py-2">{{ $classification->name }}</td>
+            <td class="border px-4 py-2">{{ $classification->category->name }}</td>
+            <td class="border">
+                <x-jet-button class="m-2" wire:click="edit({{$classification->id}})">
+                    {{ __('Edit') }}
+                </x-jet-button>
             </td>
         </tr>
         @endforeach

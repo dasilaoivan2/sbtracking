@@ -23,9 +23,11 @@
 
     
     @include('livewire.orderbusinesses.modals.addorderbus')
+    @include('livewire.orderbusinesses.modals.addothermatter')
     @include('livewire.orderbusinesses.modals.reference')
     @include('livewire.orderbusinesses.modals.editorderbus')
     @include('livewire.orderbusinesses.modals.editreference')
+    @include('livewire.orderbusinesses.modals.editothermatter')
     
     
 

@@ -9,7 +9,7 @@ class Orderbusiness extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ordercategory_id', 'description', 'number_order_sb', 'number_order_session', 'session_date', 'invocation', 'other_matter', 'reading'];
+    protected $fillable = ['ordercategory_id', 'description', 'number_order_sb', 'number_order_session', 'session_date', 'invocation', 'reading'];
     // protected $dates = ['session_date'];
 
     public function ordercategory()
@@ -45,6 +45,11 @@ class Orderbusiness extends Model
     public function businessreferences()
     {
         return $this->hasMany('App\Models\Businessreference');
+    }
+
+    public function othermatters()
+    {
+        return $this->hasMany('App\Models\Othermatter');
     }
         
     

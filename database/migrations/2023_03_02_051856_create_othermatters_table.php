@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orderbusinesses', function (Blueprint $table) {
+        Schema::create('othermatters', function (Blueprint $table) {
             $table->id();
-            $table->text('description');
-            $table->text('number_order_sb');
-            $table->text('number_order_session');
-            $table->date('session_date');
-            $table->text('invocation');
-            $table->foreignId('ordercategory_id');
+            $table->foreignId('orderbusiness_id');
+            $table->longText('description');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orderbusinesses');
+        Schema::dropIfExists('othermatters');
     }
 };

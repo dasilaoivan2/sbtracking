@@ -391,21 +391,52 @@
 
 
             <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                <div class="block pb-5">
-                    <div class="w-full">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="other_matter">
-                                Other Matter
-                            </label>
-                            <textarea wire:model="other_matter" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here..."></textarea>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="othermatters">
+                Other Matters <x-jet-button wire:click="showEditModalMatter"> <span class="mr-2"><i class="fa fa-plus fa-lg"></i></span> Add </x-jet-button>
+            </label>
 
-                            @error('other_matter')
-                            <span class="text-xs font-bold text-red-600 font-italic">This field must not be blank.</span>
-                            @enderror
+            <div id="othermatters">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                    <div class="block pb-5">
+                        <div class="w-full">
+                            <div class="mb-4">
+                                <table class="table-auto w-full text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="border p-1">#</th>
+                                            <th class="border p-1">Description</th>
+                                            <th class="border p-1">Action</th>
+                                            <!-- <th class="border p-1">Select</th> -->
+                                        </tr>
+                                    </thead>
+                                    @php
+                                    $count = 1;
+                                    @endphp
+                                    <tbody>
+                                        @if($othermatters)
+                                        @foreach($othermatters as $othermatter)
+                                        <tr>
+                                            <td class="border p-1">{{ $count++ }}</td>
+                                            <td class="border p-1">{{ $othermatter->description }}</td>
+                                            <td class="border p-1"><x-jet-button wire:click.prevent="deleteMatterEdit({{$othermatter->id}})"> Delete </x-jet-button></td>
+
+                                        </tr>
+                                        @endforeach
+                                        @endif
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            
 
                         </div>
                     </div>
+
                 </div>
+            
+
+        </div>
 
 
                 <div class="block pb-5">
