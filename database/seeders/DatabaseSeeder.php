@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
             OrdercategorySeeder::class,
             TypeSeeder::class,
             AuthorSeeder::class,
+            ResolutionSeeder::class,
+            OrdinanceSeeder::class,
         ]);
     }
 }
